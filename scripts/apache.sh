@@ -50,7 +50,7 @@ sudo usermod -a -G www-data vagrant
 # if not installed
 sudo a2dismod mpm_prefork
 sudo a2dismod php5 
-sudo a2enmod mpm_worker rewrite actions ssl
+sudo a2enmod mpm_worker rewrite actions ssl headers
 curl --silent -L $github_url/helpers/vhost.sh > vhost
 sudo chmod guo+x vhost
 sudo mv vhost /usr/local/bin
