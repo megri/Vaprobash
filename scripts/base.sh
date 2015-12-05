@@ -4,9 +4,7 @@ echo "Setting Timezone & Locale to $3 & $4"
 
 sudo ln -sf /usr/share/zoneinfo/$3 /etc/localtime
 sudo locale-gen $4
-export LANG=$4
-
-echo "export LANG=$4" >> /home/vagrant/.bashrc
+sudo update-locale LANG=$4 LC_CTYPE=$4
 
 echo ">>> Installing Base Packages"
 
@@ -21,17 +19,7 @@ sudo apt-get update
 
 # Install base packages
 # -qq implies -y --force-yes
-sudo apt-get install -qq curl unzip git-core ack-grep software-properties-common build-essential
-
-# Git Config and set Owner
-curl --silent -L $github_url/helpers/gitconfig > /home/vagrant/.gitconfig
-sudo chown vagrant:vagrant /home/vagrant/.gitconfig
-
-# Common fixes for git
-git config --global http.postBuffer 65536000
-
-# Cache http credentials for one day while pull/push
-git config --global credential.helper 'cache --timeout=86400'
+sudo apt-get install -qq curl unzip git-core ack-grep software-properties-common build-essential cachefilesd
 
 
 echo ">>> Installing *.xip.io self-signed SSL"
@@ -89,3 +77,6 @@ fi
 
 # Enable case sensitivity
 shopt -u nocasematch
+
+# Enable cachefilesd
+echo "RUN=yes" > /etc/default/cachefilesd
